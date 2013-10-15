@@ -1,0 +1,10 @@
+{
+  "name": "node-qa",
+  "main": "bin/index.js",
+  "version": "0.0.1",
+
+  "dependencies": {
+    "livetex-tools": "0.0.5",
+    "node-async": "0.1.1-4"
+  }
+}
