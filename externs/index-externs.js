@@ -72,11 +72,26 @@ qa.report.Reporter.prototype.caseStopped = function(name) {};
 qa.report.ReportItem = function(type, name, data) {};
 
 /**
- * @returns {!string} Тип записи.
+ * @return {!string} Время.
  */
-qa.report.ReportItem.prototype.getType = function() {}
+qa.report.ReportItem.prototype.getTime = function() {};
 
-qa.report.AssertionItem = function(value, name, testCaseName) {};
+/**
+ * @return {!string} Тип записи.
+ */
+qa.report.ReportItem.prototype.getType = function() {};
+
+/**
+ * @return {!string} Имя записи.
+ */
+qa.report.ReportItem.prototype.getName = function() {};
+
+qa.report.AssertionItem = function(id, value, name, testCaseName) {};
+
+/**
+ * @return {!string} Время.
+ */
+qa.report.AssertionItem.prototype.getId = function() {};
 
 /**
  * @return {!boolean}
@@ -97,9 +112,6 @@ qa.report.filterItemsByType = function(items, type) {};
  */
 qa.report.AsyncGetType = function (data, complete){};
 
-/**
- * @enum {string}
- */
 qa.report.ReportItemType = {
   ASSERTION_RESULT: "assertion-result",
 
@@ -108,7 +120,10 @@ qa.report.ReportItemType = {
   TEST_STEP_STARTED: "test-step-started"
 };
 
-qa.report.getItemTypeStatistic = function(items, complete) {};
+/**
+ * @returns {!JSON} Отчет о тестах в формате JSON.
+ */
+qa.report.JSONReport = function() {};
 
 /**
  * @param {string=} opt_name Имя тест-кейса.

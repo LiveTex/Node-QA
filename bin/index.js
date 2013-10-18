@@ -29,7 +29,8 @@ qa.report = {};
 qa.run = function(scenario) {
 
   function buildReport() {
-    qa.report.buildReport();
+    var report = qa.report.JSONReport();
+    console.log(JSON.stringify(report, "", 2));
     process.exit();
   }
 
@@ -76,6 +77,12 @@ qa.report.Reporter = function() {
    */
   this.__items = [];
 
+  /**
+   * @type {number}
+   * @private
+   */
+  this.__assertionCounter = 0
+
 };
 
 
@@ -85,7 +92,8 @@ qa.report.Reporter = function() {
  * @param {!string} name Утверждение.
  */
 qa.report.Reporter.prototype.addAssertion = function(value, name) {
-  this.__items.push(new qa.report.AssertionItem(value, name));
+  this.__assertionCounter += 1;
+  this.__items.push(new qa.report.AssertionItem(String(this.__assertionCounter), value, name));
 };
 
 
@@ -157,17 +165,47 @@ qa.report.ReportItem = function(type, name, data) {
    */
   this.__data = data;
 
+
+  /**
+   * @type {!string}
+   * @private
+   */
+  this.__time = new Date().getTime();
+
 };
 
 
 /**
- * @returns {!string} Тип записи.
+ * @return {!string} Время.
+ */
+qa.report.ReportItem.prototype.getTime = function() {
+  return this.__time;
+};
+
+
+/**
+ * @return {!string} Тип записи.
  */
 qa.report.ReportItem.prototype.getType = function() {
   return this.__type;
-}
+};
 
-qa.report.AssertionItem = function(value, name, testCaseName) {
+
+/**
+ * @return {!string} Имя записи.
+ */
+qa.report.ReportItem.prototype.getName = function() {
+  return this.__name;
+};
+
+
+qa.report.AssertionItem = function(id, value, name, testCaseName) {
+
+
+  /**
+   * @type {!string}
+   */
+   this.__id = id;
 
   /**
    * @type {!string}
@@ -194,9 +232,25 @@ qa.report.AssertionItem = function(value, name, testCaseName) {
    * @private
    */
   this.__testCaseName = testCaseName;
+
+
+  /**
+   * @type {!string}
+   * @private
+   */
+  this.__time = new Date().getTime();
+
 };
 
 util.inherits(qa.report.AssertionItem, qa.report.ReportItem);
+
+
+/**
+ * @return {!string} Время.
+ */
+qa.report.AssertionItem.prototype.getId = function() {
+  return this.__id;
+};
 
 
 /**
@@ -241,80 +295,41 @@ qa.report.ReportItemType = {
   TEST_STEP_STARTED: "test-step-started"
 };
 
-qa.report.getItemTypeStatistic = function(items, complete) {
-  var typeStatistic = {};
-  typeStatistic[qa.report.ReportItemType.ASSERTION_RESULT] = 0;
-  typeStatistic[qa.report.ReportItemType.TEST_CASE_STARTED] = 0;
-  typeStatistic[qa.report.ReportItemType.TEST_CASE_STOPPED] = 0;
-  typeStatistic[qa.report.ReportItemType.TEST_STEP_STARTED] = 0;
 
-  complete(items.reduce(
-    function(stat, current){
-      stat[current] += 1;
-      return stat;
-    },
-    typeStatistic));
-};
-
-
-qa.report.getAssertionStatistic = function(items, complete) {
-  var assertionStatistic = {
-    ok: 0,
-    fail: 0
-  };
-
-  complete(items.reduce(
-    function(stat, current) {
-      if (current.getValue()) {
-        stat["ok"] += 1;
-      } else {
-        stat["fail"] += 1;
-      }
-      return stat;
-    },
-    assertionStatistic
-  ));
-};
-
-
-qa.report.buildReport = function() {
-  async.sequence([
-    async.each(qa.report.AsyncGetType),
-    qa.report.getItemTypeStatistic
-  ])(qa.report.__reporter.getReport(),
-     qa.report.printSummaryReport,
-     console.log);
-  async.sequence([
-    qa.report.getAssertionStatistic
-  ])(qa.report.filterItemsByType(
-      qa.report.__reporter.getReport(),
-      qa.report.ReportItemType.ASSERTION_RESULT
-     ),
-     qa.report.printAssertionReport,
-     console.log
-    );
-};
-
-
-qa.report.printSummaryReport = function(stat) {
-  console.log("------- SUMMARY -------");
-  console.log(stat[qa.report.ReportItemType.TEST_CASE_STARTED] + " tests, " +
-              stat[qa.report.ReportItemType.TEST_CASE_STOPPED] + " successful, " +
-              (stat[qa.report.ReportItemType.TEST_CASE_STARTED] -
-              stat[qa.report.ReportItemType.TEST_CASE_STOPPED]) + " fail. ");
-};
-
-qa.report.printAssertionReport = function(stat) {
-  var logger = undefined;
-  if (stat["fail"] > 0) {
-    logger = console.warn;
-  } else {
-    logger = console.error;
+qa.report.__addNode = function(node, path, obj) {
+  var step = path.shift();
+  if (path.length === 0) {
+    obj[step] = node;
+  } else if ((obj[step] !== null) && (typeof obj[step] === 'object')) {
+    qa.report.__addNode(node, path, obj[step]);
   }
-
-  logger(stat["ok"] + " assertions, " + stat["fail"] + " fail.");
 };
 
+
+/**
+ * @returns {!JSON} Отчет о тестах в формате JSON.
+ */
+qa.report.JSONReport = function() {
+  var path = [];
+  var result = {};
+  var items = qa.report.__reporter.getReport();
+  for (var i in items) {
+    var item = items[i];
+    switch (item.getType()) {
+      case qa.report.ReportItemType.TEST_CASE_STARTED:
+        path.push(item.getName());
+        qa.report.__addNode({}, path.slice(0), result);
+        break;
+      case qa.report.ReportItemType.TEST_CASE_STOPPED:
+        path.pop();
+        break;
+      case qa.report.ReportItemType.ASSERTION_RESULT:
+        qa.report.__addNode(item.getValue(), path.slice(0).concat("Assertion#" + item.getId()), result);
+        break;
+    }
+  }
+  return result;
+};
 
 
 /**
@@ -399,8 +414,12 @@ qa.TestCase.prototype.tearDown = function(step) {
   var self = this;
 
   this.__tearDown = function(data, complete, cancel) {
-    qa.report.__reporter.caseStopped(self.getName());
-    step.call(null, self, complete, cancel);
+    function loaclComplete(data) {
+      qa.report.__reporter.caseStopped(self.getName());
+      complete(data);
+    }
+
+    step.call(null, self, loaclComplete, cancel);
   }
 };
 
