@@ -112,6 +112,9 @@ qa.report.filterItemsByType = function(items, type) {};
  */
 qa.report.AsyncGetType = function (data, complete){};
 
+/**
+ * @enum {string}
+ */
 qa.report.ReportItemType = {
   ASSERTION_RESULT: "assertion-result",
 
@@ -121,9 +124,14 @@ qa.report.ReportItemType = {
 };
 
 /**
- * @returns {!JSON} Отчет о тестах в формате JSON.
+ * @returns {!Object} Отчет о тестах в формате JSON.
  */
 qa.report.JSONReport = function() {};
+
+/**
+ * @returns {!Object} Отчет о тестах в формате JSON.
+ */
+qa.report.summaryReport = function () {};
 
 /**
  * @param {string=} opt_name Имя тест-кейса.

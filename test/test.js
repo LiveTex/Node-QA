@@ -19,7 +19,7 @@ var scenario = function(suite) {
 
   function testCaseStep(data, complete) {
     console.info("testCase step TaskFunction was called.");
-    qa.assert.ok(true);
+    qa.assert.ok(false);
     console.log(data["test"]);
     complete(data);
   }

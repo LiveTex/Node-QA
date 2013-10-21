@@ -29,8 +29,9 @@ qa.report = {};
 qa.run = function(scenario) {
 
   function buildReport() {
-    var report = qa.report.JSONReport();
-    console.log(JSON.stringify(report, "", 2));
+    //var report = qa.report.JSONReport();
+    //console.log(JSON.stringify(report, "", 2));
+    console.log(JSON.stringify(qa.report.summaryReport(), "", 2));
     process.exit();
   }
 
@@ -295,7 +296,12 @@ qa.report.ReportItemType = {
   TEST_STEP_STARTED: "test-step-started"
 };
 
-
+/**
+ * @param {!*} node Узел дерева.
+ * @param {!Array} path Путь в дереве.
+ * @param {!Object} obj Дерево.
+ * @private
+ */
 qa.report.__addNode = function(node, path, obj) {
   var step = path.shift();
   if (path.length === 0) {
@@ -307,7 +313,7 @@ qa.report.__addNode = function(node, path, obj) {
 
 
 /**
- * @returns {!JSON} Отчет о тестах в формате JSON.
+ * @returns {!Object} Отчет о тестах в формате JSON.
  */
 qa.report.JSONReport = function() {
   var path = [];
@@ -330,6 +336,51 @@ qa.report.JSONReport = function() {
   }
   return result;
 };
+
+
+/**
+ * @returns {!Object} Отчет о тестах в формате JSON.
+ */
+qa.report.summaryReport = function () {
+  var statistics = {
+    "tests-passed": 0,
+    "tests-failed": 0,
+    "assertion-passed": 0,
+    "assertion-failed": 0
+  };
+  var items = qa.report.__reporter.getReport();
+  var test_status = true;
+
+  for (var i in items) {
+    var item = items[i];
+    switch (item.getType()) {
+      case qa.report.ReportItemType.TEST_CASE_STARTED:
+        test_status = true;
+        break;
+      case qa.report.ReportItemType.TEST_CASE_STOPPED:
+        if (test_status) {
+          statistics["tests-passed"] += 1;
+        } else {
+          statistics["tests-failed"] += 1;
+        }
+        test_status = true;
+        break;
+      case qa.report.ReportItemType.ASSERTION_RESULT:
+        var assertion_status = item.getValue();
+        test_status = test_status && assertion_status;
+        if (assertion_status) {
+          statistics["assertion-passed"] += 1;
+        } else {
+          statistics["assertion-failed"] += 1;
+        }
+        break;
+    }
+  }
+
+  return statistics;
+};
+
+
 
 
 /**
