@@ -4,7 +4,6 @@ var events = require('events');
 var assert = require('assert');
 
 
-
 /**
  * @namespace
  */
@@ -12,36 +11,27 @@ var qa = {};
 
 
 /**
- * @namespace
- */
-qa.assert = {};
-
-
-/**
- * @namespace
- */
-qa.report = {};
-
-
-/**
  * @param {function(!qa.TestCase)} scenario Сценарий тестирования.
  */
 qa.run = function(scenario) {
-
   function buildReport() {
-    //var report = qa.report.JSONReport();
-    //console.log(JSON.stringify(report, "", 2));
-    console.log(JSON.stringify(qa.report.summaryReport(), "", 2));
-    process.exit();
+    console.log(JSON.stringify(qa.format.summaryReport(), [''], 2));
+    process.exit(0);
   }
 
   var reporter = new qa.report.Reporter();
   qa.report.setReporter(reporter);
 
-  var suite = new qa.TestCase("Test suite.");
+  var suite = new qa.TestCase('Test suite.');
   scenario(suite);
   suite.buildStep()(null, buildReport, buildReport);
 };
+
+
+/**
+ * @namespace
+ */
+qa.assert = {};
 
 
 /**
@@ -54,268 +44,30 @@ qa.assert.ok = function(value, opt_message) {
 
 
 /**
- * @type {!qa.report.Reporter}
+ * @namespace
  */
-qa.report.__reporter = {};
+qa.format = {};
 
-
-/**
- * @param {!qa.report.Reporter} reporter Репортер.
- */
-qa.report.setReporter = function(reporter) {
-  qa.report.__reporter = reporter;
-};
-
-
-/**
- * @constructor
- */
-qa.report.Reporter = function() {
-
-  /**
-   * @type {!Array<!qa.report.ReportItem>}
-   * @private
-   */
-  this.__items = [];
-
-  /**
-   * @type {number}
-   * @private
-   */
-  this.__assertionCounter = 0
-
-};
-
-
-/**
- * Добавляет утверждение в журнал.
- * @param {!boolean} value Истинность утверждения.
- * @param {!string} name Утверждение.
- */
-qa.report.Reporter.prototype.addAssertion = function(value, name) {
-  this.__assertionCounter += 1;
-  this.__items.push(new qa.report.AssertionItem(String(this.__assertionCounter), value, name));
-};
-
-
-/**
- * @returns {!Array<!qa.report.ReportItem>} Репорт выполнения.
- */
-qa.report.getReport = function() {
-  return qa.report.__reporter.getReport();
-};
-
-
-/**
- * @returns {!Array<!qa.report.ReportItem>} Репорт выполнения.
- */
-qa.report.Reporter.prototype.getReport = function() {
-  return this.__items;
-};
-
-
-/**
- * @param name
- */
-qa.report.Reporter.prototype.caseStarted = function(name) {
-  this.__items.push(new qa.report.ReportItem(
-    qa.report.ReportItemType.TEST_CASE_STARTED,
-    name,
-    {}
-  ));
-};
-
-
-/**
- * @param name
- */
-qa.report.Reporter.prototype.caseStopped = function(name) {
-  this.__items.push(new qa.report.ReportItem(
-    qa.report.ReportItemType.TEST_CASE_STOPPED,
-    name,
-    {}
-  ));
-};
-
-
-/**
- * @param {!string} type
- * @param {!string} name
- * @param {!Object} data
- * @constructor
- */
-qa.report.ReportItem = function(type, name, data) {
-
-  /**
-   * @type {!string}
-   * @private
-   */
-  this.__type = type;
-
-
-  /**
-   * @type {!string} Имя записи.
-   * @private
-   */
-  this.__name = name;
-
-
-  /**
-   * @type {!Object}
-   * @private
-   */
-  this.__data = data;
-
-
-  /**
-   * @type {!string}
-   * @private
-   */
-  this.__time = new Date().getTime();
-
-};
-
-
-/**
- * @return {!string} Время.
- */
-qa.report.ReportItem.prototype.getTime = function() {
-  return this.__time;
-};
-
-
-/**
- * @return {!string} Тип записи.
- */
-qa.report.ReportItem.prototype.getType = function() {
-  return this.__type;
-};
-
-
-/**
- * @return {!string} Имя записи.
- */
-qa.report.ReportItem.prototype.getName = function() {
-  return this.__name;
-};
-
-
-qa.report.AssertionItem = function(id, value, name, testCaseName) {
-
-
-  /**
-   * @type {!string}
-   */
-   this.__id = id;
-
-  /**
-   * @type {!string}
-   * @private
-   */
-  this.__type = qa.report.ReportItemType.ASSERTION_RESULT;
-
-  /**
-   * @type {string=}
-   * @private
-   */
-  this.__name = name;
-
-
-  /**
-   * @type {!boolean}
-   * @private
-   */
-  this.__value = value;
-
-
-  /**
-   * @type {!string}
-   * @private
-   */
-  this.__testCaseName = testCaseName;
-
-
-  /**
-   * @type {!string}
-   * @private
-   */
-  this.__time = new Date().getTime();
-
-};
-
-util.inherits(qa.report.AssertionItem, qa.report.ReportItem);
-
-
-/**
- * @return {!string} Время.
- */
-qa.report.AssertionItem.prototype.getId = function() {
-  return this.__id;
-};
-
-
-/**
- * @return {!boolean}
- */
-qa.report.AssertionItem.prototype.getValue = function() {
-  return this.__value;
-};
-
-
-/**
- * @param {!Array<!qa.report.ReportItem>} items
- * @param {!string} type
- * @return {!Array<!qa.report.ReportItem>}
- */
-qa.report.filterItemsByType = function(items, type) {
-  return items.filter(function (item) {
-    return item.getType() === type;
-  })
-};
-
-
-/**
- * @param {qa.report.ReportItem} data
- * @param {!function(*)} complete
- * @constructor
- */
-qa.report.AsyncGetType = function (data, complete){
-  complete(data.getType());
-};
-
-
-
-/**
- * @enum {string}
- */
-qa.report.ReportItemType = {
-  ASSERTION_RESULT: "assertion-result",
-
-  TEST_CASE_STARTED: "test-case-started",
-  TEST_CASE_STOPPED: "test-case-stopped",
-  TEST_STEP_STARTED: "test-step-started"
-};
 
 /**
  * @param {!*} node Узел дерева.
- * @param {!Array} path Путь в дереве.
+ * @param {!Array.<*>} path Путь в дереве.
  * @param {!Object} obj Дерево.
- * @private
  */
-qa.report.__addNode = function(node, path, obj) {
+qa.format.addNode = function(node, path, obj) {
   var step = path.shift();
   if (path.length === 0) {
     obj[step] = node;
   } else if ((obj[step] !== null) && (typeof obj[step] === 'object')) {
-    qa.report.__addNode(node, path, obj[step]);
+    qa.format.addNode(node, path, obj[step]);
   }
 };
 
 
 /**
- * @returns {!Object} Отчет о тестах в формате JSON.
+ * @return {!Object} Отчет о тестах в формате JSON.
  */
-qa.report.JSONReport = function() {
+qa.format.report = function() {
   var path = [];
   var result = {};
   var items = qa.report.__reporter.getReport();
@@ -324,13 +76,14 @@ qa.report.JSONReport = function() {
     switch (item.getType()) {
       case qa.report.ReportItemType.TEST_CASE_STARTED:
         path.push(item.getName());
-        qa.report.__addNode({}, path.slice(0), result);
+        qa.format.addNode({}, path.slice(0), result);
         break;
       case qa.report.ReportItemType.TEST_CASE_STOPPED:
         path.pop();
         break;
       case qa.report.ReportItemType.ASSERTION_RESULT:
-        qa.report.__addNode(item.getValue(), path.slice(0).concat("Assertion#" + item.getId()), result);
+        qa.format.addNode(item.getValue(),
+            path.slice(0).concat('Assertion#' + item.getId()), result);
         break;
     }
   }
@@ -339,14 +92,14 @@ qa.report.JSONReport = function() {
 
 
 /**
- * @returns {!Object} Отчет о тестах в формате JSON.
+ * @return {!Object} Отчет о тестах в формате JSON.
  */
-qa.report.summaryReport = function () {
+qa.format.summaryReport = function() {
   var statistics = {
-    "tests-passed": 0,
-    "tests-failed": 0,
-    "assertion-passed": 0,
-    "assertion-failed": 0
+    'tests-passed': 0,
+    'tests-failed': 0,
+    'assertion-passed': 0,
+    'assertion-failed': 0
   };
   var items = qa.report.__reporter.getReport();
   var test_status = true;
@@ -359,9 +112,9 @@ qa.report.summaryReport = function () {
         break;
       case qa.report.ReportItemType.TEST_CASE_STOPPED:
         if (test_status) {
-          statistics["tests-passed"] += 1;
+          statistics['tests-passed'] += 1;
         } else {
-          statistics["tests-failed"] += 1;
+          statistics['tests-failed'] += 1;
         }
         test_status = true;
         break;
@@ -369,29 +122,245 @@ qa.report.summaryReport = function () {
         var assertion_status = item.getValue();
         test_status = test_status && assertion_status;
         if (assertion_status) {
-          statistics["assertion-passed"] += 1;
+          statistics['assertion-passed'] += 1;
         } else {
-          statistics["assertion-failed"] += 1;
+          statistics['assertion-failed'] += 1;
         }
         break;
     }
   }
-
   return statistics;
 };
 
 
+/**
+ * @namespace
+ */
+qa.report = {};
 
 
 /**
- * @param {string=} opt_name Имя тест-кейса.
+ * @type {qa.report.Reporter}
+ */
+qa.report.__reporter = null;
+
+
+/**
+ * @param {!qa.report.Reporter} reporter Репортер.
+ */
+qa.report.setReporter = function(reporter) {
+  qa.report.__reporter = reporter;
+};
+
+
+/**
+ * @return {!Array.<!qa.report.ReportItem>} Репорт выполнения.
+ */
+qa.report.getReport = function() {
+  return qa.report.__reporter.getReport();
+};
+
+
+/**
+ * @param {!Array.<!qa.report.ReportItem>} items
+ * @param {string} type
+ * @return {!Array.<!qa.report.ReportItem>}
+ */
+qa.report.filterItemsByType = function(items, type) {
+  return items.filter(function(item) {
+    return item.getType() === type;
+  });
+};
+
+
+/**
+ * @param {!qa.report.ReportItem} data
+ * @param {function(string)} complete
+ * @param {function(string, number=)} cancel Обработчик ошибки.
+ */
+qa.report.asyncGetType = function(data, complete, cancel) {
+  complete(data.getType());
+};
+
+
+
+/**
  * @constructor
+ * @extends {qa.report.ReportItem}
+ * @param {!string} id
+ * @param {!boolean} value
+ * @param {string=} opt_name
+ * @param {string=} opt_testCaseName
+ */
+qa.report.AssertionItem = function(id, value, opt_name, opt_testCaseName) {
+  qa.report.ReportItem.call(this,
+      qa.report.ReportItemType.ASSERTION_RESULT, opt_name);
+
+  /**
+   * @type {string}
+   */
+  this.__id = id;
+
+  /**
+   * @type {boolean}
+   */
+  this.__value = value;
+
+  /**
+   * @type {string|undefined}
+   */
+  this.__testCaseName = opt_testCaseName;
+};
+
+util.inherits(qa.report.AssertionItem, qa.report.ReportItem);
+
+
+/**
+ * @return {string} Время.
+ */
+qa.report.AssertionItem.prototype.getId = function() {
+  return this.__id;
+};
+
+
+/**
+ * @return {boolean}
+ */
+qa.report.AssertionItem.prototype.getValue = function() {
+  return this.__value;
+};
+
+
+
+/**
+ * @constructor
+ */
+qa.report.Reporter = function() {
+
+  /**
+   * @type {!Array.<!qa.report.ReportItem>}
+   */
+  this.__items = [];
+
+  /**
+   * @type {number}
+   */
+  this.__assertionCounter = 0;
+
+};
+
+
+/**
+ * Добавляет утверждение в журнал.
+ * @param {!boolean} value Истинность утверждения.
+ * @param {string=} opt_name Утверждение.
+ */
+qa.report.Reporter.prototype.addAssertion = function(value, opt_name) {
+  this.__assertionCounter += 1;
+  this.__items.push(
+      new qa.report.AssertionItem(String(this.__assertionCounter),
+      value, opt_name));
+};
+
+
+/**
+ * @return {!Array.<!qa.report.ReportItem>} Репорт выполнения.
+ */
+qa.report.Reporter.prototype.getReport = function() {
+  return this.__items;
+};
+
+
+/**
+ * @param {string} name Имя.
+ */
+qa.report.Reporter.prototype.caseStarted = function(name) {
+  this.__items.push(new qa.report.ReportItem(
+      qa.report.ReportItemType.TEST_CASE_STARTED,
+      name));
+};
+
+
+/**
+ * @param {string} name Имя.
+ */
+qa.report.Reporter.prototype.caseStopped = function(name) {
+  this.__items.push(new qa.report.ReportItem(
+      qa.report.ReportItemType.TEST_CASE_STOPPED,
+      name));
+};
+
+
+
+/**
+ * @constructor
+ * @param {string} type
+ * @param {string=} opt_name
+ */
+qa.report.ReportItem = function(type, opt_name) {
+
+  /**
+   * @type {string}
+   */
+  this.__type = type;
+
+  /**
+   * @type {string|undefined} Имя записи.
+   */
+  this.__name = opt_name;
+
+  /**
+   * @type {string}
+   */
+  this.__time = Date.now().toString();
+};
+
+
+/**
+ * @return {string} Время.
+ */
+qa.report.ReportItem.prototype.getTime = function() {
+  return this.__time;
+};
+
+
+/**
+ * @return {string} Тип записи.
+ */
+qa.report.ReportItem.prototype.getType = function() {
+  return this.__type;
+};
+
+
+/**
+ * @return {string|undefined} Имя записи.
+ */
+qa.report.ReportItem.prototype.getName = function() {
+  return this.__name;
+};
+
+
+/**
+ * @enum {string}
+ */
+qa.report.ReportItemType = {
+  ASSERTION_RESULT: 'assertion-result',
+
+  TEST_CASE_STARTED: 'test-case-started',
+  TEST_CASE_STOPPED: 'test-case-stopped',
+  TEST_STEP_STARTED: 'test-step-started'
+};
+
+
+
+/**
+ * @constructor
+ * @param {string=} opt_name Имя тест-кейса.
  */
 qa.TestCase = function(opt_name) {
 
   /**
-   * @type {string=} Имя тест-кейса.
-   * @private
+   * @type {string|undefined} Имя тест-кейса.
    */
   this.__name = opt_name;
 
@@ -410,15 +379,13 @@ qa.TestCase = function(opt_name) {
    */
   this.__tearDown = async.nop;
 
-
   this.setUp(async.nop);
   this.tearDown(async.nop);
-
 };
 
 
 /**
- * @return {string=} Имя теста.
+ * @return {string|undefined} Имя теста.
  */
 qa.TestCase.prototype.getName = function() {
   return this.__name;
@@ -465,13 +432,13 @@ qa.TestCase.prototype.tearDown = function(step) {
   var self = this;
 
   this.__tearDown = function(data, complete, cancel) {
-    function loaclComplete(data) {
+    function localComplete(data) {
       qa.report.__reporter.caseStopped(self.getName());
       complete(data);
     }
 
-    step.call(null, self, loaclComplete, cancel);
-  }
+    step.call(null, self, localComplete, cancel);
+  };
 };
 
 
@@ -480,8 +447,11 @@ qa.TestCase.prototype.tearDown = function(step) {
  */
 qa.TestCase.prototype.buildStep = function() {
   return async.sequence(
-    [this.__setUp].concat(this.__steps).concat(this.__tearDown));
+      [this.__setUp].concat(this.__steps).concat(this.__tearDown));
 };
 
 
+/**
+ * @type {*}
+ */
 module.exports = qa;

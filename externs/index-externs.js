@@ -6,19 +6,14 @@
 var qa = {};
 
 /**
- * @namespace
- */
-qa.assert = {};
-
-/**
- * @namespace
- */
-qa.report = {};
-
-/**
  * @param {function(!qa.TestCase)} scenario Сценарий тестирования.
  */
 qa.run = function(scenario) {};
+
+/**
+ * @namespace
+ */
+qa.assert = {};
 
 /**
  * @param {!boolean} value Значение.
@@ -27,9 +22,73 @@ qa.run = function(scenario) {};
 qa.assert.ok = function(value, opt_message) {};
 
 /**
+ * @namespace
+ */
+qa.format = {};
+
+/**
+ * @param {!*} node Узел дерева.
+ * @param {!Array} path Путь в дереве.
+ * @param {!Object} obj Дерево.
+ */
+qa.format.addNode = function(node, path, obj) {};
+
+/**
+ * @return {!Object} Отчет о тестах в формате JSON.
+ */
+qa.format.report = function() {};
+
+/**
+ * @return {!Object} Отчет о тестах в формате JSON.
+ */
+qa.format.summaryReport = function () {};
+
+/**
+ * @namespace
+ */
+qa.report = {};
+
+/**
  * @param {!qa.report.Reporter} reporter Репортер.
  */
 qa.report.setReporter = function(reporter) {};
+
+/**
+ * @return {!Array<!qa.report.ReportItem>} Репорт выполнения.
+ */
+qa.report.getReport = function() {};
+
+/**
+ * @param {!Array.<!qa.report.ReportItem>} items
+ * @param {string} type
+ * @return {!Array.<!qa.report.ReportItem>}
+ */
+qa.report.filterItemsByType = function(items, type) {};
+
+/**
+ * @param {!qa.report.ReportItem} data
+ * @param {function(string)} complete
+ */
+qa.report.asyncGetType = function (data, complete, cancel){};
+
+/**
+ * @constructor
+ * @param id
+ * @param value
+ * @param name
+ * @param testCaseName
+ */
+qa.report.AssertionItem = function(id, value, name, testCaseName) {};
+
+/**
+ * @return {string} Время.
+ */
+qa.report.AssertionItem.prototype.getId = function() {};
+
+/**
+ * @return {boolean}
+ */
+qa.report.AssertionItem.prototype.getValue = function() {};
 
 /**
  * @constructor
@@ -42,11 +101,6 @@ qa.report.Reporter = function() {};
  * @param {!string} name Утверждение.
  */
 qa.report.Reporter.prototype.addAssertion = function(value, name) {};
-
-/**
- * @returns {!Array<!qa.report.ReportItem>} Репорт выполнения.
- */
-qa.report.getReport = function() {};
 
 /**
  * @returns {!Array<!qa.report.ReportItem>} Репорт выполнения.
@@ -64,53 +118,26 @@ qa.report.Reporter.prototype.caseStarted = function(name) {};
 qa.report.Reporter.prototype.caseStopped = function(name) {};
 
 /**
- * @param {!string} type
- * @param {!string} name
- * @param {!Object} data
  * @constructor
+ * @param {string} type
+ * @param {string} name
  */
-qa.report.ReportItem = function(type, name, data) {};
+qa.report.ReportItem = function(type, name) {};
 
 /**
- * @return {!string} Время.
+ * @return {string} Время.
  */
 qa.report.ReportItem.prototype.getTime = function() {};
 
 /**
- * @return {!string} Тип записи.
+ * @return {string} Тип записи.
  */
 qa.report.ReportItem.prototype.getType = function() {};
 
 /**
- * @return {!string} Имя записи.
+ * @return {string} Имя записи.
  */
 qa.report.ReportItem.prototype.getName = function() {};
-
-qa.report.AssertionItem = function(id, value, name, testCaseName) {};
-
-/**
- * @return {!string} Время.
- */
-qa.report.AssertionItem.prototype.getId = function() {};
-
-/**
- * @return {!boolean}
- */
-qa.report.AssertionItem.prototype.getValue = function() {};
-
-/**
- * @param {!Array<!qa.report.ReportItem>} items
- * @param {!string} type
- * @return {!Array<!qa.report.ReportItem>}
- */
-qa.report.filterItemsByType = function(items, type) {};
-
-/**
- * @param {qa.report.ReportItem} data
- * @param {!function(*)} complete
- * @constructor
- */
-qa.report.AsyncGetType = function (data, complete){};
 
 /**
  * @enum {string}
@@ -124,18 +151,8 @@ qa.report.ReportItemType = {
 };
 
 /**
- * @returns {!Object} Отчет о тестах в формате JSON.
- */
-qa.report.JSONReport = function() {};
-
-/**
- * @returns {!Object} Отчет о тестах в формате JSON.
- */
-qa.report.summaryReport = function () {};
-
-/**
- * @param {string=} opt_name Имя тест-кейса.
  * @constructor
+ * @param {string=} opt_name Имя тест-кейса.
  */
 qa.TestCase = function(opt_name) {};
 
