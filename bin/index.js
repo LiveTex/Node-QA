@@ -1,8 +1,10 @@
 var util = require('util');
 var async = require('node-async');
-var ts = require('node-ts');
 var events = require('events');
 var assert = require('assert');
+var ts = require('node-ts');
+var ds = require('node-ds');
+var http = require('http');
 
 
 /**
@@ -187,6 +189,55 @@ qa.report.asyncGetType = function(data, complete, cancel) {
 
 /**
  * @constructor
+ * @param {string} type
+ * @param {string=} opt_name
+ */
+qa.report.ReportItem = function(type, opt_name) {
+
+  /**
+   * @type {string}
+   */
+  this.__type = type;
+
+  /**
+   * @type {string|undefined} Имя записи.
+   */
+  this.__name = opt_name;
+
+  /**
+   * @type {string}
+   */
+  this.__time = Date.now().toString();
+};
+
+
+/**
+ * @return {string} Время.
+ */
+qa.report.ReportItem.prototype.getTime = function() {
+  return this.__time;
+};
+
+
+/**
+ * @return {string} Тип записи.
+ */
+qa.report.ReportItem.prototype.getType = function() {
+  return this.__type;
+};
+
+
+/**
+ * @return {string|undefined} Имя записи.
+ */
+qa.report.ReportItem.prototype.getName = function() {
+  return this.__name;
+};
+
+
+
+/**
+ * @constructor
  * @extends {qa.report.ReportItem}
  * @param {!string} id
  * @param {!boolean} value
@@ -273,71 +324,22 @@ qa.report.Reporter.prototype.getReport = function() {
 
 
 /**
- * @param {string} name Имя.
+ * @param {string=} opt_name Имя.
  */
-qa.report.Reporter.prototype.caseStarted = function(name) {
+qa.report.Reporter.prototype.caseStarted = function(opt_name) {
   this.__items.push(new qa.report.ReportItem(
       qa.report.ReportItemType.TEST_CASE_STARTED,
-      name));
+      opt_name));
 };
 
 
 /**
- * @param {string} name Имя.
+ * @param {string=} opt_name Имя.
  */
-qa.report.Reporter.prototype.caseStopped = function(name) {
+qa.report.Reporter.prototype.caseStopped = function(opt_name) {
   this.__items.push(new qa.report.ReportItem(
       qa.report.ReportItemType.TEST_CASE_STOPPED,
-      name));
-};
-
-
-
-/**
- * @constructor
- * @param {string} type
- * @param {string=} opt_name
- */
-qa.report.ReportItem = function(type, opt_name) {
-
-  /**
-   * @type {string}
-   */
-  this.__type = type;
-
-  /**
-   * @type {string|undefined} Имя записи.
-   */
-  this.__name = opt_name;
-
-  /**
-   * @type {string}
-   */
-  this.__time = Date.now().toString();
-};
-
-
-/**
- * @return {string} Время.
- */
-qa.report.ReportItem.prototype.getTime = function() {
-  return this.__time;
-};
-
-
-/**
- * @return {string} Тип записи.
- */
-qa.report.ReportItem.prototype.getType = function() {
-  return this.__type;
-};
-
-
-/**
- * @return {string|undefined} Имя записи.
- */
-qa.report.ReportItem.prototype.getName = function() {
-  return this.__name;
+      opt_name));
 };
 
 

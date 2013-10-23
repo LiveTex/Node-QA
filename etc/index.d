@@ -2,8 +2,8 @@ qa/qa.js
 qa/assert/assert.js
 qa/format/format.js
 qa/report/report.js
+qa/report/report-item.js
 qa/report/assertion-item.js
 qa/report/reporter.js
-qa/report/report-item.js
 qa/report/report-item-type.js
 qa/test-case.js

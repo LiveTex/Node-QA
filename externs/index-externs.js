@@ -28,7 +28,7 @@ qa.format = {};
 
 /**
  * @param {!*} node Узел дерева.
- * @param {!Array} path Путь в дереве.
+ * @param {!Array.<*>} path Путь в дереве.
  * @param {!Object} obj Дерево.
  */
 qa.format.addNode = function(node, path, obj) {};
@@ -41,7 +41,7 @@ qa.format.report = function() {};
 /**
  * @return {!Object} Отчет о тестах в формате JSON.
  */
-qa.format.summaryReport = function () {};
+qa.format.summaryReport = function() {};
 
 /**
  * @namespace
@@ -54,7 +54,7 @@ qa.report = {};
 qa.report.setReporter = function(reporter) {};
 
 /**
- * @return {!Array<!qa.report.ReportItem>} Репорт выполнения.
+ * @return {!Array.<!qa.report.ReportItem>} Репорт выполнения.
  */
 qa.report.getReport = function() {};
 
@@ -68,17 +68,41 @@ qa.report.filterItemsByType = function(items, type) {};
 /**
  * @param {!qa.report.ReportItem} data
  * @param {function(string)} complete
+ * @param {function(string, number=)} cancel Обработчик ошибки.
  */
-qa.report.asyncGetType = function (data, complete, cancel){};
+qa.report.asyncGetType = function(data, complete, cancel) {};
 
 /**
  * @constructor
- * @param id
- * @param value
- * @param name
- * @param testCaseName
+ * @param {string} type
+ * @param {string=} opt_name
  */
-qa.report.AssertionItem = function(id, value, name, testCaseName) {};
+qa.report.ReportItem = function(type, opt_name) {};
+
+/**
+ * @return {string} Время.
+ */
+qa.report.ReportItem.prototype.getTime = function() {};
+
+/**
+ * @return {string} Тип записи.
+ */
+qa.report.ReportItem.prototype.getType = function() {};
+
+/**
+ * @return {string|undefined} Имя записи.
+ */
+qa.report.ReportItem.prototype.getName = function() {};
+
+/**
+ * @constructor
+ * @extends {qa.report.ReportItem}
+ * @param {!string} id
+ * @param {!boolean} value
+ * @param {string=} opt_name
+ * @param {string=} opt_testCaseName
+ */
+qa.report.AssertionItem = function(id, value, opt_name, opt_testCaseName) {};
 
 /**
  * @return {string} Время.
@@ -98,56 +122,34 @@ qa.report.Reporter = function() {};
 /**
  * Добавляет утверждение в журнал.
  * @param {!boolean} value Истинность утверждения.
- * @param {!string} name Утверждение.
+ * @param {string=} opt_name Утверждение.
  */
-qa.report.Reporter.prototype.addAssertion = function(value, name) {};
+qa.report.Reporter.prototype.addAssertion = function(value, opt_name) {};
 
 /**
- * @returns {!Array<!qa.report.ReportItem>} Репорт выполнения.
+ * @return {!Array.<!qa.report.ReportItem>} Репорт выполнения.
  */
 qa.report.Reporter.prototype.getReport = function() {};
 
 /**
- * @param name
+ * @param {string=} opt_name Имя.
  */
-qa.report.Reporter.prototype.caseStarted = function(name) {};
+qa.report.Reporter.prototype.caseStarted = function(opt_name) {};
 
 /**
- * @param name
+ * @param {string=} opt_name Имя.
  */
-qa.report.Reporter.prototype.caseStopped = function(name) {};
-
-/**
- * @constructor
- * @param {string} type
- * @param {string} name
- */
-qa.report.ReportItem = function(type, name) {};
-
-/**
- * @return {string} Время.
- */
-qa.report.ReportItem.prototype.getTime = function() {};
-
-/**
- * @return {string} Тип записи.
- */
-qa.report.ReportItem.prototype.getType = function() {};
-
-/**
- * @return {string} Имя записи.
- */
-qa.report.ReportItem.prototype.getName = function() {};
+qa.report.Reporter.prototype.caseStopped = function(opt_name) {};
 
 /**
  * @enum {string}
  */
 qa.report.ReportItemType = {
-  ASSERTION_RESULT: "assertion-result",
+  ASSERTION_RESULT: 'assertion-result',
 
-  TEST_CASE_STARTED: "test-case-started",
-  TEST_CASE_STOPPED: "test-case-stopped",
-  TEST_STEP_STARTED: "test-step-started"
+  TEST_CASE_STARTED: 'test-case-started',
+  TEST_CASE_STOPPED: 'test-case-stopped',
+  TEST_STEP_STARTED: 'test-step-started'
 };
 
 /**
@@ -157,7 +159,7 @@ qa.report.ReportItemType = {
 qa.TestCase = function(opt_name) {};
 
 /**
- * @return {string=} Имя теста.
+ * @return {string|undefined} Имя теста.
  */
 qa.TestCase.prototype.getName = function() {};
 
