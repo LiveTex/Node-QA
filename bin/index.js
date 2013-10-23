@@ -1,5 +1,6 @@
 var util = require('util');
 var async = require('node-async');
+var ts = require('node-ts');
 var events = require('events');
 var assert = require('assert');
 

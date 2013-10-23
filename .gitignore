@@ -1,2 +1,8 @@
+### IDE Files
+*.iml
 .idea/
-node_modules
+
+## NPM
+node_modules/
+npm-debug.log
+
