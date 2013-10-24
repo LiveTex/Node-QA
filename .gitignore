@@ -2,7 +2,11 @@
 *.iml
 .idea/
 
-## NPM
+### NPM
 node_modules/
 npm-debug.log
+
+### Build artefacts
+bin/
+externs/
 
