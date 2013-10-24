@@ -15,10 +15,12 @@ qa/business/comm/chat-server-slave.js
 qa/business/comm/i-connection.js
 qa/business/comm/chat-server-connection.js
 qa/business/comm/io-server-connection.js
+qa/business/comm/polling-server-connection.js
 qa/business/comm/message.js
 qa/business/comm/chat-server-request.js
 qa/business/comm/chat-server-response.js
 qa/business/comm/io-server-request.js
+qa/business/comm/io-server-response.js
 
 qa/business/entity/group.js
 qa/business/entity/i-group-holder.js
