@@ -4,45 +4,28 @@ var qa = require('../bin/index.js');
 var async = require('node-async');
 
 
-var scenario = function(suite) {
-  var application = new qa.business.app.Application();
-  var member = new qa.business.entity.Member('te.stetrem@gmail.com');
+console.info('setUp is called');
+var app = new qa.business.app.Application();
+var member = new qa.business.entity.Member('te.stetrem@gmail.com');
+member.setPassword('1231231');
 
+var connection = new qa.business.comm.ChatServerConnection(app, '127.0.0.1');
+connection.connect();
 
-  function setUp(_, complete) {
-    member.setPassword('1231231');
-    var connection = new qa.business.comm.ChatServerConnection('127.0.0.1');
-    connection.connect();
-    application.attachConnection(member.getName(), connection);
-    console.info('setUp was called.');
-    complete(application);
-  }
+app.attachConnection(member.getName(), connection);
 
-  suite.setUp(setUp);
-
-
-  function tearDown(data, complete) {
-    application.getConnectionByUser(member).destroy();
-    console.info('TearDown was called.');
+async.sequence([
+  function(data, complete, cancel) {
+    console.log('sequence is called');
     complete(data);
+  },
+  qa.business.app.chat.member.auth,
+  function(authResponse, complete, cancel) {
+    console.log('Received:' + authResponse.encode());
+    complete(authResponse);
   }
-
-  suite.tearDown(tearDown);
-
-
-  function suiteStep(data, complete) {
-    console.info('suiteStep was called.');
-
-    async.sequence([
-      qa.business.app.chat.member.auth,
-      function(authResponse, complete, cancel) {
-        console.log(authResponse.encode());
-        complete(authResponse);
-      }
-    ]).call(application, member, complete, console.error);
-  }
-
-  suite.addStep(suiteStep);
-};
-
-qa.run(scenario);
+]).call(app, member, function() {
+  app.getConnectionByUser(member).destroy();
+  console.info('tearDown is called.');
+  process.exit(0);
+}, console.error);
