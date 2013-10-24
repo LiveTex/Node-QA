@@ -1,6 +1,7 @@
 
 
 var qa = require('../bin/index.js');
+var async = require('node-async');
 
 
 var scenario = function(suite) {
@@ -9,9 +10,11 @@ var scenario = function(suite) {
 
 
   function setUp(_, complete) {
+    member.setPassword('1231231');
     var connection = new qa.business.comm.ChatServerConnection('127.0.0.1');
+    connection.connect();
     application.attachConnection(member.getName(), connection);
-    console.info('SetUp TaskFunction was called.');
+    console.info('setUp was called.');
     complete(application);
   }
 
@@ -20,7 +23,7 @@ var scenario = function(suite) {
 
   function tearDown(data, complete) {
     application.getConnectionByUser(member).destroy();
-    console.info('TearDown TaskFunction was called.');
+    console.info('TearDown was called.');
     complete(data);
   }
 
@@ -28,15 +31,15 @@ var scenario = function(suite) {
 
 
   function suiteStep(data, complete) {
-    console.info('suiteStep TaskFunction was called.');
+    console.info('suiteStep was called.');
 
     async.sequence([
-      qa.business.app.member.auth,
+      qa.business.app.chat.member.auth,
       function(authResponse, complete, cancel) {
-        console.log(authResponse.getData());
+        console.log(authResponse.encode());
         complete(authResponse);
       }
-    ]).call(application, data, complete, console.error);
+    ]).call(application, member, complete, console.error);
   }
 
   suite.addStep(suiteStep);
