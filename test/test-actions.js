@@ -9,9 +9,8 @@ var app = new qa.business.app.Application();
 var member = new qa.business.entity.Member('te.stetrem@gmail.com');
 member.setPassword('1231231');
 
-var connection =
-    new qa.business.comm.ChatServerConnection(app, '192.168.48.246');
-connection.connect();
+var slave = qa.business.comm.getChatServerSlave('127.0.0.1');
+var connection = new qa.business.comm.ChatServerConnection(slave);
 
 app.attachConnection(member.getName(), connection);
 
@@ -22,11 +21,11 @@ async.sequence([
   },
   qa.business.app.chat.member.auth,
   function(authResponse, complete, cancel) {
-    console.log('Received:' + authResponse.encode());
     complete(authResponse);
   }
 ]).call(app, member, function() {
   app.getConnectionByUser(member).destroy();
+  qa.business.comm.destroyChatServerSlave(slave);
   console.info('tearDown is called.');
   process.exit(0);
 }, console.error);
