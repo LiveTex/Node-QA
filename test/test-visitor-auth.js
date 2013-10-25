@@ -9,7 +9,7 @@ visitor.setIoAuthChannel('io');
 visitor.setPollingChannel('poll');
 
 var io_connection =
-    new qa.business.comm.IoServerConnection(IO_SERVER);
+    new qa.business.comm.LivetexServerConnection(IO_SERVER);
 app.attachConnection(visitor.getIoAuthChannel(), io_connection);
 
 var polling_connection =
