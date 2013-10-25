@@ -1,24 +1,27 @@
-var IO_SERVER = 'io3-testhttp.livetex.ru';
+var IO_SERVER = 'io1-testhttp.livetex.ru';
 
 var qa = require('../bin/index.js');
 var async = require('node-async');
 
 var app = new qa.business.app.Application();
 var visitor = new qa.business.entity.Visitor('account:1914:site:10001350');
-visitor.setIoAuthChannel('io');
-visitor.setPollingChannel('poll');
+visitor.setIoAuthConnection('io');
+visitor.setPollingConnection('poll');
 
 var io_connection =
-    new qa.business.comm.LivetexServerConnection(IO_SERVER);
-app.attachConnection(visitor.getIoAuthChannel(), io_connection);
+    new qa.business.comm.IoServerConnection(visitor, IO_SERVER);
+app.attachConnection(visitor.getIoAuthConnection(), io_connection);
 
 var polling_connection =
     new qa.business.comm.PollingServerConnection(IO_SERVER);
-app.attachConnection(visitor.getPollingChannel(), polling_connection);
+app.attachConnection(visitor.getPollingConnection(), polling_connection);
 
 async.sequence([
   qa.business.app.web.auth,
-  qa.business.app.web.startPolling
+  qa.business.app.web.startPolling,
+  function(data, complete) {
+    setTimeout(complete, 30000);
+  }
 ]).call(app, visitor, function(data) {
   console.log(data);
 },
