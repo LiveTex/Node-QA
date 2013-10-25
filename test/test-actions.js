@@ -9,7 +9,7 @@ var app = new qa.business.app.Application();
 var member = new qa.business.entity.Member('te.stetrem@gmail.com');
 member.setPassword('1231231');
 
-var slave = qa.business.comm.getChatServerSlave('127.0.0.1');
+var slave = qa.business.comm.createChatServerSlave('127.0.0.1');
 var connection = new qa.business.comm.ChatServerConnection(slave);
 
 app.attachConnection(member.getName(), connection);
