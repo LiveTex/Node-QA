@@ -18,7 +18,6 @@ app.attachConnection(visitor.getPollingConnection(), polling_connection);
 
 async.sequence([
   qa.business.app.web.auth,
-  qa.business.app.web.startPolling,
   function(data, complete) {
     setTimeout(complete, 30000);
   }
