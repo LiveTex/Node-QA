@@ -1,130 +1,133 @@
-qa = require('../bin/index.js');
-qa = require('config');
+var qa = require('../bin/index.js');
+var exec = require('node-exec');
+var async = require('node-async');
+//var config = require('config');
+config = {
+  site: '1231231',
+  login: 'user@example.com',
+  password: '123123'
+}
 
-suite.setUp(function(tastCase, complete, cancel) {
-  var visitor = new qa.business.entity.Visitor(config.site);
-  testCase.addVisitor(visitor);
+//var visitor = qa.business.app.visitor;
+//var member = qa.business.app.member;
 
-  visitor.setPollingChannel('visitor#io-polling');
-  this.attachConnection(visitor.getIoAuthChannel(),
-      new qa.business.comm.IoServerConnection(config.io_server));
+var scenario = function(suite) {
 
-  visitor.setIoAuthChannel('visitor#io-auth');
-  this.attachConnection(visitor.getPollingChannel(),
-      new qa.business.comm.PollingServerConnection(config.io_server));
+  function log(data, complete, cancel) {
+    console.log(data);
+    complete(data);
+  }
 
-  visitor.setChatServerChannel('visitor#chat-server');
-  this.attachConnection(visitor.getChatServerChannel(),
-      new qa.business.comm.ChatServerConnection());
+  function logComment(comment) {
+    return function(data, complete, cancel) {
+      console.log(comment);
+      complete(data);
+    }
+  }
 
-  var member = new qa.business.entity.Member(config.member.login,
-      config.member.password);
-  testCase.addMember(member);
+  function openSite(list) {
+    return async.sequence([logComment('open-site')].concat(list));
+  }
 
-  this.attachConnection(member.getName(),
-      new new qa.business.comm.ChatServerConnection());
-});
+  function openChat(list) {
+    return async.sequence([logComment('open-chat')].concat(list));
+  }
 
-suite.tearDown(function() {});
+  function reopenChat(list) {
+    return async.sequence([logComment('reopen-chat')].concat(list));
+  }
 
-var visitor = qa.business.visitor;
-var member = qa.business.member;
+  function login(list) {
+    return async.sequence([logComment('login')].concat(list));
+  }
 
-suite.addStep(
-    async.parallel([
+  function barrier(barrierId, opt_weight) {
+    return function(data, complete, cancel) {
+      function localComplete(localData) {
+        console.log(barrierId);
+        complete(data);
+      }
+      exec.barrier.hold(barrierId, localComplete, cancel, opt_weight);
+    }
+  }
+
+  var appTestCase = new qa.ApplicationTestCase();
+
+
+  var firstVisitor = new qa.business.entity.Client(
+      new qa.business.entity.Visitor(config.site),
       async.sequence([
-        visitor.openSite([
-          lock.barrier('auth'),
-          visitor.selectAvailableMember,
-          visitor.openChat([
-            async.barrier('chat'),
-            visitor.assert.ChatOpened
+        log,
+        openSite([
+          barrier('1st-visitor-auth'),
+          logComment('visitor.selectAvailableMember'),
+          openChat([
+            barrier('1st-visitor-open-chat'),
+            logComment('visitor.assert.ChatOpened')
           ])
         ]),
-        visitor2.openSite([
-          lock.barrier('auth2'),
-          visitor2.selectAvailableMember,
-          visitor2.openChat([
-            async.barrier('chat2'),
-            visitor2.assert.ChatOpened,
-            visitor.openSite([
-              lock.barrier('auth3'),
-              visitor.selectAvailableMember,
-              visitor.openChat([
-                async.barrier('chat3'),
-                visitor.assert.ChatOpened,
-                visitor.assertRobomember
-              ])
-            ])
+        barrier('1st-visitor-close-site'),
+        barrier('2nd-visitor-opened-chat'),
+        openSite([
+          barrier('1st-visitor-auth-again'),
+          logComment('visitor.selectAvailableMember'),
+          reopenChat([
+            barrier('1st-visitor-reopen-chat'),
+            logComment('visitor.assert.ChatOpened')
           ])
         ])
       ]),
-
-    ]));
-
-
-/**
- *
- */
-var visitor.openSite = function(list) {
-  return async.sequence([
-    visitor.auth
-  ].concat(list).concat(visitor.leaveSite));
-};
+      {}//new qa.business.entity.VisitorSession()
+      );
+  appTestCase.addClient(firstVisitor);
 
 
-testCase.client[0].scenario(
-    async.sequence([
-      visitor.openSite([
-        lock.barrier('auth'),
-        visitor.selectAvailableMember,
-        visitor.openChat([
-          async.barrier('chat'),
-          visitor.assert.ChatOpened
+  var secondVisitor = new qa.business.entity.Client(
+      new qa.business.entity.Visitor(config.site),
+      async.sequence([
+        log,
+        barrier('1st-visitor-close-site'),
+        openSite([
+          barrier('2nd-visitor-auth'),
+          logComment('visitor.selectAvailableMember'),
+          openChat([
+            barrier('2nd-visitor-open-chat'),
+            logComment('visitor.assert.ChatOpened'),
+            barrier('2nd-visitor-opened-chat')
+          ])
         ])
       ]),
-      lock.barrier('close'),
-      async.barrier('chat2-opened'),
-      visitor.openSite([
-        lock.barrier('auth3'),
-        visitor.selectAvailableMember,
-        visitor.openChat([
-          async.barrier('chat3'),
-          visitor.assert.ChatOpened
-        ])
-      ])
-    ]));
+      {}//new qa.business.entity.VisitorSession()
+      );
+  appTestCase.addClient(secondVisitor);
 
-testCase.client[1].scenario(
-    async.sequence([
-      async.barrier('close'),
-      visitor.openSite([
-        lock.barrier('auth2'),
-        visitor.selectAvailableMember,
-        visitor.openChat([
-          async.barrier('chat2'),
-          visitor.assert.ChatOpened,
-          async.barrier('chat2-opened')
-        ])
-      ])
-    ]));
 
-testCase.client[2].scenario(
-    async.sequence([
-      member.login([
-        member.assert.maxChats(1),
-        lock.barrier('auth'),
-        member.assert.visitorListLength(1),
-        lock.barrier('chat'),
-        member.assert.ChatOpened,
-        lock.barrier('auth2'),
-        member.assert.visitorListLength(1),
-        lock.barrier('chat2'),
-        member.assert.ChatOpened,
-        lock.barrier('auth3'),
-        member.assert.visitorListLength(2),
-        lock.barrier('chat3'),
-        member.assert.ChatNotOpened
-      ])
-    ])
-)
+  var member = new qa.business.entity.Client(
+      new qa.business.entity.Member(config.login, config.password),
+      async.sequence([
+        login([
+          log,
+          logComment('member.assert.maxChats(1)'),
+          barrier('1st-visitor-auth'),
+          logComment('member.assert.visitorListLength(1)'),
+          barrier('1st-visitor-open-chat'),
+          logComment('member.assert.ChatOpened'),
+          barrier('2nd-visitor-auth'),
+          logComment('member.assert.visitorListLength(1)'),
+          barrier('2nd-visitor-open-chat'),
+          logComment('member.assert.ChatOpened'),
+          barrier('1st-visitor-auth-again'),
+          logComment('member.assert.visitorListLength(2)'),
+          barrier('1st-visitor-reopen-chat'),
+          logComment('member.assert.ChatNotOpened')
+        ])
+      ]),
+      {}//new qa.business.entity.MemeberSession()
+      );
+  appTestCase.addClient(member);
+
+
+  suite.addCase(appTestCase);
+};
+
+qa.run(scenario);

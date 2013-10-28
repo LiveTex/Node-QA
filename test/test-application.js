@@ -1,4 +1,4 @@
-qa = require('../bin/index.js');
+var qa = require('../bin/index.js');
 
 var scenario = function(suite) {
 
@@ -11,6 +11,7 @@ var scenario = function(suite) {
         console.log('first scenario.');
         console.log(data.getVisitor().getName());
         console.log(this.name);
+        complete(data);
       },
       {name: 'context 1.'});
   appTestCase.addClient(fstClient);
@@ -22,6 +23,7 @@ var scenario = function(suite) {
         console.log('second scenario.');
         console.log(data.getVisitor().getName());
         console.log(this.name);
+        complete(data);
       },
       {name: 'context 2.'});
   appTestCase.addClient(sndClient);
@@ -33,6 +35,7 @@ var scenario = function(suite) {
         console.log('member scenario.');
         console.log(data.getMember().getName());
         console.log(this.name);
+        complete(data);
       },
       {name: 'context 3.'});
   appTestCase.addClient(memberClient);
