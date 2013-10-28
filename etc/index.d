@@ -29,8 +29,11 @@ qa/business/entity/visitor.js
 qa/business/entity/i-visitor-holder.js
 qa/business/entity/chat.js
 qa/business/entity/i-chat-holder.js
+qa/business/entity/client.js
 
 qa/business/app/application.js
 qa/business/app/chat/member/member.js
 qa/business/app/chat/visitor/visitor.js
 qa/business/app/web/visitor.js
+
+qa/application-test-case.js
