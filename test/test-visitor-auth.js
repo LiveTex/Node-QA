@@ -9,11 +9,11 @@ visitor.setIoAuthConnection('io');
 visitor.setPollingConnection('poll');
 
 var io_connection =
-    new qa.business.comm.IoServerConnection(visitor, IO_SERVER);
+    new qa.business.io.IoServerConnection(visitor, IO_SERVER);
 app.attachConnection(visitor.getIoAuthConnection(), io_connection);
 
 var polling_connection =
-    new qa.business.comm.PollingServerConnection(IO_SERVER);
+    new qa.business.io.PollingServerConnection(IO_SERVER);
 app.attachConnection(visitor.getPollingConnection(), polling_connection);
 
 async.sequence([

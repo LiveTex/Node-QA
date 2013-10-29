@@ -11,14 +11,14 @@ qa/test-case.js
 
 qa/business/business.js
 
-qa/business/comm/chat-server-slave.js
-qa/business/comm/i-connection.js
-qa/business/comm/protocol.js
-qa/business/comm/chat-server-protocol.js
-qa/business/comm/chat-server-connection.js
-qa/business/comm/livetex-server-protocol.js
-qa/business/comm/livetex-server-connection.js
-qa/business/comm/message.js
+qa/business/io/chat-server-slave.js
+qa/business/io/i-connection.js
+qa/business/io/protocol.js
+qa/business/io/chat-server-protocol.js
+qa/business/io/chat-server-connection.js
+qa/business/io/livetex-server-protocol.js
+qa/business/io/livetex-server-connection.js
+qa/business/io/message.js
 
 qa/business/entity/group.js
 qa/business/entity/i-group-holder.js
