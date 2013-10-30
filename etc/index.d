@@ -12,6 +12,7 @@ qa/test-case.js
 qa/business/business.js
 
 qa/business/utils/utils.js
+qa/business/utils/async/async.js
 
 qa/business/io/chat-server-slave.js
 qa/business/io/i-connection.js

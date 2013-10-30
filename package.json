@@ -6,6 +6,7 @@
   "dependencies": {
     "livetex-tools": "0.0.8-3",
     "node-async": "0.1.1-4",
+    "node-exec": "0.3.2-0",
     "node-ts": "0.0.1-1",
     "node-ds": "0.2.10-1",
     "node-util": "0.1.2-5"
