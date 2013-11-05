@@ -2,12 +2,11 @@ var qa = require('../bin/index.js');
 var exec = require('node-exec');
 var async = require('node-async');
 //var config = require('config');
-config = {
+var config = {
   site: '1231231',
   login: 'user@example.com',
   password: '123123'
-}
-
+};
 //var visitor = qa.business.app.visitor;
 //var member = qa.business.app.member;
 
