@@ -38,9 +38,9 @@ var visitorScenario = async.sequence([
   qa.business.app.visitor.openChat,
   qa.business.app.visitor.assertHasChatWith(member),
   qa.business.utils.async.barrier('both have opened chat'),
-  qa.business.utils.async.barrier('member has visitor chat'),
+  qa.business.utils.async.barrier('member has the visitor chat'),
   qa.business.app.visitor.chatDisconnect,
-  qa.business.utils.async.delayActor(1000),
+  qa.business.app.visitor.waitTillChatClose,
   qa.business.utils.async.barrier('visitor can reopen chat'),
   qa.business.app.visitor.chatAuth,
   qa.business.app.visitor.reopenChat,
@@ -57,7 +57,9 @@ var memberScenario = async.sequence([
   qa.business.app.member.waitForChat,
   qa.business.utils.async.barrier('both have opened chat'),
   qa.business.app.member.assertHasChatWith(visitor),
-  qa.business.utils.async.barrier('member has visitor chat'),
+  qa.business.utils.async.barrier('member has the visitor chat'),
+  qa.business.app.member.waitForChat,
+  qa.business.app.member.assertHasNoOnlineChatWith(visitor),
   async.parallel([
     qa.business.utils.async.barrier('visitor can reopen chat'),
     qa.business.app.member.waitForChat

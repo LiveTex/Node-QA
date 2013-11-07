@@ -34,7 +34,7 @@ var stickyVisitorScenario = async.sequence([
   qa.business.app.visitor.auth,
   qa.business.app.visitor.chatAuth,
   qa.business.app.visitor.openChat,
-  qa.business.app.visitor.assertChatOpened,
+  qa.business.app.visitor.assertHasChatWith(member),
   qa.business.utils.async.barrier('sticky visitor opened chat'),
   qa.business.app.visitor.chatDisconnect,
   qa.business.app.visitor.waitTillChatClose,
@@ -48,7 +48,7 @@ var stickyVisitorScenario = async.sequence([
     qa.business.utils.async.barrier('sticky chat reopened')
   ]),
   qa.business.utils.async.barrier('sticky get real chat'),
-  qa.business.app.visitor.assertChatMember(member),
+  qa.business.app.visitor.assertHasChatWith(member),
   qa.business.utils.async.barrier('All is OK', 3)
 ]);
 
@@ -80,7 +80,7 @@ var anotherVisitorScenario = async.sequence([
   qa.business.app.visitor.auth,
   qa.business.app.visitor.chatAuth,
   qa.business.app.visitor.openChat,
-  qa.business.app.visitor.assertChatOpened,
+  qa.business.app.visitor.assertHasChatWith(member),
   qa.business.utils.async.barrier('another visitor opened chat'),
   qa.business.utils.async.barrier('All is OK', 3)
 ]);
@@ -91,4 +91,6 @@ stickyVisitorScenario.call(stickyVisitorSession, stickyVisitor,
 anotherVisitorScenario.call(anotherVisitorSession, anotherVisitor,
     function(data) {}, console.error);
 
-memberScenario.call(memberSession, member, function(data) {}, console.error);
+memberScenario.call(memberSession, member, function(data) {
+  process.exit(0);
+}, console.error);

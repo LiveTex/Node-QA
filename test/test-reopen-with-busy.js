@@ -40,7 +40,6 @@ var visitorScenario = async.sequence([
   qa.business.utils.async.barrier('both have opened chat'),
   qa.business.utils.async.barrier('member has visitor chat'),
   qa.business.app.visitor.chatDisconnect,
-  qa.business.utils.async.delayActor(1000),
   qa.business.utils.async.barrier('visitor can reopen chat'),
   qa.business.app.visitor.chatAuth,
   qa.business.app.visitor.reopenChat,
@@ -57,6 +56,7 @@ var memberScenario = async.sequence([
   qa.business.app.member.waitForChat,
   qa.business.utils.async.barrier('both have opened chat'),
   qa.business.app.member.assertHasChatWith(visitor),
+  qa.business.app.member.setBusy(true),
   qa.business.utils.async.barrier('member has visitor chat'),
   async.parallel([
     qa.business.utils.async.barrier('visitor can reopen chat'),
@@ -65,7 +65,7 @@ var memberScenario = async.sequence([
   qa.business.app.member.assertHasChatWith(visitor)
 ]);
 
-visitorScenario.call(visitorSession, visitor, function(data) {}, console.error);
+visitorScenario.call(visitorSession, visitor, function(data) {console.log('V')}, console.error);
 
 memberScenario.call(memberSession, member, function(data) {
   console.log('All is OK.');
