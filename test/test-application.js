@@ -33,7 +33,7 @@ var scenario = function(suite) {
       new qa.business.entity.Member('user@example.com'),
       function(data, complete, cancel) {
         console.log('member scenario.');
-        console.log(data.getMember().getName());
+        console.log(data.getMember().getLogin());
         console.log(this.name);
         complete(data);
       },

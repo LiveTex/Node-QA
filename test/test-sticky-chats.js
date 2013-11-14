@@ -86,10 +86,10 @@ var anotherVisitorScenario = async.sequence([
 ]);
 
 stickyVisitorScenario.call(stickyVisitorSession, stickyVisitor,
-    function(data) {}, console.error);
+    function(data) {process.exit(0);}, console.error);
 
 anotherVisitorScenario.call(anotherVisitorSession, anotherVisitor,
-    function(data) {}, console.error);
+    function(data) {process.exit(0);}, console.error);
 
 memberScenario.call(memberSession, member, function(data) {
   process.exit(0);

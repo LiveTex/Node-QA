@@ -65,7 +65,8 @@ var memberScenario = async.sequence([
   qa.business.app.member.assertHasChatWith(visitor)
 ]);
 
-visitorScenario.call(visitorSession, visitor, function(data) {console.log('V')}, console.error);
+visitorScenario.call(visitorSession, visitor,
+    function(data) {console.log('V')}, console.error);
 
 memberScenario.call(memberSession, member, function(data) {
   console.log('All is OK.');

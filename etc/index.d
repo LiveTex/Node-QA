@@ -8,6 +8,7 @@ qa/report/assertion-item.js
 qa/report/reporter.js
 qa/report/report-item-type.js
 qa/test-case.js
+qa/application-test-case.js
 
 qa/business/business.js
 
@@ -30,6 +31,7 @@ qa/business/entity/member.js
 qa/business/entity/i-member-holder.js
 qa/business/entity/visitor.js
 qa/business/entity/i-visitor-holder.js
+qa/business/entity/client.js
 
 qa/business/entity/factory/factory.js
 
