@@ -7,6 +7,72 @@ var logger = new cli.Logger();
 logger.setConsole(console);
 
 
+
+
+qa.app.case('reopen-test', [
+  async.script.sequence([
+    qa.assertEquals(visitor, 'Visitor the same.')
+  ]),
+  async.script.sequence([
+    // member sequence
+  ])
+]).call(this, [visitor, member], complete, cancel)
+
+
+/*
+qa.suite('varios-tests', [
+  qa.case('test-not-ok', qa.assertNotOk),
+  qa.case('test-ok', qa.assertOk)
+*/
+
+qa.suite('varios-tests', [
+  qa.app.case('message-send-test', [
+    async.script.sequence([
+      // visitor sequence
+
+    ]),
+    async.script.sequence([
+      // member sequence
+    ])
+  ])
+  qa.app.case('reopen-test', [
+    async.script.sequence([
+      // visitor sequence
+
+    ]),
+    async.script.sequence([
+      // member sequence
+    ])
+  ])
+]).call(this, [visitor, member], complete, cancel)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 console.info('Setting up test participants.');
 //var chatSlave = qa.business.io.createChatServerSlave('192.168.48.113');
 var chatSlave = qa.business.io.createChatServerSlave('evgen.livetex.ru');
@@ -34,9 +100,15 @@ console.info('Starting scenario.');
 var visitorScenario = async.sequence([
   qa.business.utils.async.barrier('member ready'),
   qa.business.app.visitor.auth,
+
+
   qa.business.app.visitor.chatAuth,
   qa.business.app.visitor.openChat,
   qa.business.app.visitor.assertHasChatWith(member),
+
+
+
+
   qa.business.utils.async.barrier('both have opened chat'),
   qa.business.utils.async.barrier('member has visitor chat'),
   qa.business.app.visitor.chatDisconnect,
