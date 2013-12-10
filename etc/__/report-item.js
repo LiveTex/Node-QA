@@ -30,5 +30,5 @@ qa.ReportItem = function(name, comment, isOk) {
  * @inheritDoc
  */
 qa.ReportItem.prototype.toString = function() {
-  return this.__okMark + ' [' + this.__name + ']: ' + this.__comment + '\033[0m';
+  return this.__okMark  + this.__comment + ;
 };
