@@ -1,5 +1,6 @@
 
 qa/qa.js
+qa/error-handler-factory.js
 
 qa/assert/assert.js
 
@@ -22,5 +23,8 @@ qa/test/events/timeout.js
 qa/test/events/test-end.js
 qa/test/events/actor-completed.js
 
-qa/storage/storage.js
-qa/storage/shared/shared.js
+qa/db/assert/assert.js
+
+qa/db/db.js
+qa/db/node.js
+qa/db/path.js

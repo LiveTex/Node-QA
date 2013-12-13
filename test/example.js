@@ -2,6 +2,20 @@
 var async = require('node-async');
 var qa = require('../bin');
 
-qa.case('hello-test', async.script.sequence([
-  qa.assertEquals(1, 'Data is 1.')
-])).call(null, 1, console.log, console.error);
+
+
+
+
+var node = new qa.db.Node({});
+
+
+var path = new qa.db.Path('/path/to/value');
+var path2 = new qa.db.Path('/path/to');
+var path3 = new qa.db.Path('/path/to/value/..');
+
+path.set(node, '1');
+console.log(node.__value, path3.get(node));
+
+path2.set(node, '1');
+console.log(node.__value, path3.get(node));
+
