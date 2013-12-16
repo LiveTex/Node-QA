@@ -9,8 +9,6 @@
 
   "dependencies": {
     "node-async": "0.2.0",
-    "node-util": "0.2.0",
-    "node-ds": "0.2.19",
     "livetex-tools": "*"
   }
 }
