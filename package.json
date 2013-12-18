@@ -4,7 +4,11 @@
   "version": "0.0.3",
 
   "dependencies": {
-    "livetex-tools": "0.0.6",
-    "node-async": "0.1.1-4"
+    "node-async": "0.2.2",
+    "livetex-tools": "*"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/LiveTex/Node-QA"
   }
 }
