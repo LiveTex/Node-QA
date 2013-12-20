@@ -1,14 +1,14 @@
 {
   "name": "node-qa",
   "main": "bin/index.js",
-  "version": "0.1.0",
+  "version": "0.1.1",
 
   "scripts": {
     "install": "npm install livetex-tools && make"
   },
 
   "dependencies": {
-    "node-async": "0.2.0",
+    "node-async": "0.3.0",
     "livetex-tools": "*"
   }
 }

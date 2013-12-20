@@ -6,16 +6,28 @@ var qa = require('../bin');
 
 
 
-var node = new qa.db.Node({});
+
+/**
+ * @type {!Object.<string, !async.Actor>}
+ */
+exec.test[qa.APP_CASE_PREFIX + '2221'] = {
+  'app-1': qa.assert.success(async.script.sequence([
+    qa.assert.equals('1111', 'Input ok.'),
+    qa.db.save('../value'),
+    qa.db.load('../value', 'string'),
+    qa.db.load('/value', 'string'),
+
+  ]), 'Case complete.'),
+
+  'app-2': qa.assert.success(async.script.sequence([
+    qa.assert.equals('22222', 'Input ok.')
+  ]), 'Case complete.')
+};
 
 
-var path = new qa.db.Path('/path/to/value');
-var path2 = new qa.db.Path('/path/to');
-var path3 = new qa.db.Path('/path/to/value/..');
 
-path.set(node, '1');
-console.log(node.__value, path3.get(node));
-
-path2.set(node, '1');
-console.log(node.__value, path3.get(node));
+/**
+ * @type {!Object.<string, !async.Actor>}
+ */
+exec.test[qa.APP_INPUT_PREFIX + '2221'] = async.insert(['1111', '22222']);
 
