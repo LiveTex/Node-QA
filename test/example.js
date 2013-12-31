@@ -13,9 +13,9 @@ var qa = require('../bin');
 exec.test[qa.APP_CASE_PREFIX + '2221'] = {
   'app-1': qa.assert.success(async.script.sequence([
     qa.assert.equals('1111', 'Input ok.'),
-    qa.db.save('../value'),
-    qa.db.load('../value', 'string'),
-    qa.db.load('/value', 'string'),
+    qa.state.save('../value'),
+    qa.state.load('../value', 'string'),
+    qa.state.load('/value', 'string'),
 
   ]), 'Case complete.'),
 
