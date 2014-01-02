@@ -9,8 +9,8 @@ qa/exception.js
 qa/assertion.js
 qa/event.js
 
-qa/db/node.js
-qa/db/node-iterator.js
+qa/db/cursor.js
+qa/db/cursor-iterator.js
 qa/db/state.js
 qa/db/path.js
 
@@ -21,7 +21,7 @@ qa/test/i-folder-factory.js
 qa/test/case.js
 qa/test/suite.js
 
-qa/util/util.js
+qa/util/debug.js
 qa/util/json/json.js
 
 qa/assert/assert.js
