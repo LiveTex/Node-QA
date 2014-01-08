@@ -7,7 +7,7 @@ qa/assert/assert.js
 qa/result/i-folder.js
 qa/result/base.js
 qa/result/union.js
-qa/result/i-folder-factory.js
+qa/result/i-case-factory.js
 qa/result/exception.js
 qa/result/assertion.js
 qa/result/i-result.js
@@ -26,5 +26,5 @@ qa/util/net/net.js
 qa/util/json/json.js
 
 qa/case.js
-qa/event.js
+qa/event-type.js
 qa/suite.js
