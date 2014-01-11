@@ -15,7 +15,7 @@ var mobileMemberSession = new qa.business.io.MemberSession(chatSlave);
 var mobileMember = new qa.business.entity.Member('testetrem@gmail.com',
     '123123', '77BD902C-9FBE-5EAB-944A-A5DC8421C846');
 var chatFeature = new qa.business.entity.Feature('*', '444');
-var livetexIoHost = 'http://io2-unstablehttp.livetex.ru';
+var livetexIoHost = 'net://io2-unstablehttp.livetex.ru';
 var siteId = 'account:568:site:10000183';
 
 var stickyVisitorSession = new qa.business.io.VisitorSession(

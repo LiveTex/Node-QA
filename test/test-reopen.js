@@ -86,8 +86,8 @@ var memberSession = new qa.business.io.MemberSession(chatSlave);
 var member = new qa.business.entity.Member('testetrem@gmail.com', '123123');
 
 var chatFeature = new qa.business.entity.Feature('*', '444');
-//var livetexIoHost = 'http://io2-unstablehttp.livetex.ru';
-var livetexIoHost = 'http://io2-evgen.livetex.ru';
+//var livetexIoHost = 'net://io2-unstablehttp.livetex.ru';
+var livetexIoHost = 'net://io2-evgen.livetex.ru';
 var siteId = 'account:568:site:10000183';
 
 var visitorSession = new qa.business.io.VisitorSession(

@@ -23,8 +23,8 @@ var memberBetter = new qa.business.entity.Member('testetrem@gmail.com',
     '123123');
 
 var chatFeature = new qa.business.entity.Feature('*', '377');
-//var livetexIoHost = 'http://io2-unstablehttp.livetex.ru';
-var livetexIoHost = 'http://io2-evgen.livetex.ru';
+//var livetexIoHost = 'net://io2-unstablehttp.livetex.ru';
+var livetexIoHost = 'net://io2-evgen.livetex.ru';
 var siteId = 'account:568:site:10000103';
 
 var visitorSession = new qa.business.io.VisitorSession(livetexIoHost,
