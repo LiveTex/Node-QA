@@ -1,14 +1,19 @@
 {
   "name": "node-qa",
   "main": "bin/index.js",
-  "version": "0.0.3",
-
-  "dependencies": {
-    "node-async": "0.2.2",
-    "livetex-tools": "*"
+  "version": "0.1.4",
+  "scripts": {
+    "install": "npm install livetex-tools && make"
   },
+
   "repository": {
     "type": "git",
     "url": "https://github.com/LiveTex/Node-QA"
+  },
+
+  "dependencies": {
+    "node-async": "0.3.1",
+    "node-util": "0.4.0",
+    "livetex-tools": "*"
   }
 }

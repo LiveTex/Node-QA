@@ -1,7 +1,11 @@
+### IDE Files
 *.iml
-*.log
-.project
 .idea/
+
+### NPM
+node_modules/
+npm-debug.log
+
+### Build artefacts
 bin/
 externs/
-node_modules/
