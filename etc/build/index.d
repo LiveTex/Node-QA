@@ -1,6 +1,12 @@
 
 qa/qa.js
 
+qa/state/state.js
+qa/state/cursor.js
+qa/state/assert/assert.js
+qa/state/path-token.js
+qa/state/cursor-iterator.js
+
 qa/result/i-result.js
 qa/result/result.js
 qa/result/exception.js
@@ -12,16 +18,10 @@ qa/result/folder/i-folder.js
 qa/result/folder/case.js
 qa/result/folder/suite.js
 
-qa/state/state.js
-qa/state/cursor.js
-qa/state/assert/assert.js
-qa/state/path-token.js
-qa/state/cursor-iterator.js
-
 qa/assert/assert.js
+qa/assert/fail.js
 
 qa/util/util.js
-qa/util/format/format.js
 qa/util/debug/debug.js
 
 qa/event-type.js
