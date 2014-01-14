@@ -33,5 +33,5 @@ qa/ext/net/net.js
 qa/ext/net/client.js
 
 qa/ext/net/socket/socket.js
-qa/ext/net/socket/abstract-socket.js
+qa/ext/net/socket/wrapper.js
 qa/ext/net/socket/message-iterator.js
