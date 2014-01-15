@@ -35,3 +35,6 @@ qa/ext/net/client.js
 qa/ext/net/socket/socket.js
 qa/ext/net/socket/wrapper.js
 qa/ext/net/socket/message-iterator.js
+
+qa/ext/net/cookie/cookie.js
+qa/ext/net/cookie/cookie-jar.js
