@@ -12,6 +12,8 @@
   "dependencies": {
     "node-async": "0.3.5",
     "node-util": "0.4.2",
+    "node-protocols": "*",
+    "node-ds": "*",
     "livetex-tools": "*"
   }
 }
