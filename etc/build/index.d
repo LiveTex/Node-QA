@@ -3,9 +3,12 @@ qa/qa.js
 
 qa/state/state.js
 qa/state/cursor.js
-qa/state/assert/assert.js
 qa/state/path-token.js
 qa/state/cursor-iterator.js
+
+qa/state/assert/assert.js
+qa/state/condition/condition.js
+
 
 qa/result/i-result.js
 qa/result/result.js
