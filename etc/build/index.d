@@ -30,6 +30,7 @@ qa/util/debug/debug.js
 qa/event-type.js
 
 qa/ext/ext.js
+qa/ext/i-client.js
 qa/ext/i-client-library.js
 
 qa/ext/net/net.js
