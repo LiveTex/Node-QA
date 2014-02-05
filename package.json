@@ -1,7 +1,7 @@
 {
   "name": "node-qa",
   "main": "bin/index.js",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "scripts": {
     "install": "npm install livetex-tools && make"
   },
@@ -10,7 +10,7 @@
     "url": "https://github.com/LiveTex/Node-QA"
   },
   "dependencies": {
-    "node-async": "0.3.10",
+    "node-async": "0.3.11",
     "node-util": "0.4.2",
     "node-protocols": "*",
     "node-ds": "*",
