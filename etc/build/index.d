@@ -7,7 +7,7 @@ qa/state/path-token.js
 qa/state/cursor-iterator.js
 
 qa/state/assert/assert.js
-qa/state/condition/condition.js
+qa/state/if/if.js
 
 
 qa/result/i-result.js
