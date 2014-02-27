@@ -3,17 +3,17 @@
   "main": "bin/index.js",
   "version": "0.1.17",
   "scripts": {
-    "install": "npm install livetex-tools && make"
+    "install": "npm install livetex-tools && make js"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/LiveTex/Node-QA"
   },
   "dependencies": {
-    "node-async": "0.3.13",
-    "node-util": "0.4.2",
-    "node-protocols": "*",
-    "node-ds": "*",
+    "node-async": "0.3.16",
+    "node-ds": "0.2.24",
+    "node-protocols": "0.1.7",
+    "node-util": "0.4.5",
     "livetex-tools": "*"
   }
 }
