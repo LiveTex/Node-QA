@@ -1,7 +1,7 @@
 {
   "name": "node-qa",
   "main": "bin/index.js",
-  "version": "0.1.19",
+  "version": "0.1.20",
   "scripts": {
     "install": "npm install livetex-tools && make js"
   },
