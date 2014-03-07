@@ -1,6 +1,7 @@
 *.iml
+*.log
+.project
 .idea/
-node_modules/
-npm-debug.log
 bin/
 externs/
+node_modules/
