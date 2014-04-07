@@ -46,4 +46,4 @@ qa/ext/net/socket/message-iterator.js
 qa/ext/net/socket/echo-socket.js
 qa/ext/net/socket/web-socket.js
 
-qa/ext/selenium/selenium.js
+qa/ext/ui/ui.js
