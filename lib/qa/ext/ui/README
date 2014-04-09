@@ -5,7 +5,6 @@
  */
 ltt.test[qa.APP_CASE_PREFIX + 'visits'] = {
   'visitor': async.script.sequence([
-    qa.ext.ui.isServerOk(),
     qa.ext.ui.createSession(),
     qa.state.load('/selenium/latest-session'),
     qa.ext.ui.setURL('http://www.yandex.ru'),
