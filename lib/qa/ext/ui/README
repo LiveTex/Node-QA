@@ -1,0 +1,53 @@
+//Code example
+
+/**
+ * @type {!async.Step}
+ */
+ltt.test[qa.APP_CASE_PREFIX + 'visits'] = {
+  'visitor': async.script.sequence([
+    qa.ext.ui.createSession(),
+    qa.state.load('/selenium/latest-session'),
+    qa.ext.ui.setURL('http://www.yandex.ru'),
+    qa.ext.ui.setImplicitTimeouts(100),
+    qa.ext.ui.locateElement('id', 'tab-maps'),
+    async.script.if(
+        qa.state.condition.equalsTo('/selenium/latest-element',-1),
+        async.assert.true('No element')
+    ),
+    qa.ext.ui.clickElement(),
+    qa.ext.ui.locateElement('id', 'text'),
+    qa.state.load('/selenium/latest-element'),
+    qa.ext.ui.addValue('Savushkina'),
+    qa.ext.ui.submitElement(),
+    qa.ext.ui.locateElement('id', 'asdfg'),
+    async.script.if(
+        qa.state.condition.equalsTo('/selenium/latest-element',-1),
+        async.script.sequence([
+            qa.state.load('/selenium/latest-session'),
+            qa.ext.ui.deleteSession(),
+            async.assert.true('No element')
+
+        ])
+    )
+  ]),
+  'member': async.script.sequence([
+  ])
+};
+
+//Tree example
+{
+  "selenium-conf": {
+    "params": {
+      "host": "127.0.0.1",
+      "port":4444
+    }
+  },
+  "selenium": {
+    "default-browser-config":{
+      "desiredCapabilities":{
+        "browserName":"firefox",
+        "javascriptEnabled":true
+      }
+    }
+  }
+}
