@@ -1,7 +1,7 @@
 {
   "name": "node-qa",
   "main": "bin/index.js",
-  "version": "0.1.25",
+  "version": "0.1.26",
   "scripts": {
     "install": "npm update"
   },
