@@ -48,5 +48,9 @@ qa/ext/net/socket/web-socket.js
 
 qa/ext/ui/ui_deprecated.js
 qa/ext/ui/browser.js
+qa/ext/ui/actionMethod.js
 qa/ext/ui/browserName.js
 qa/ext/ui/platform.js
+qa/ext/ui/searchStrategy.js
+qa/ext/ui/timeoutType.js
+qa/ext/ui/typeOfData.js
