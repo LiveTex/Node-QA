@@ -12,7 +12,7 @@ var fnc = function() {
   var temp = new async.script.Value();
 
   return async.script.sequence([
-    browser.createSession('chrome'),
+    browser.createSession(qa.ext.ui.BrowserName.CHROME, qa.ext.ui.Platform.LINUX),
     async.console.log('create session'),
     browser.setUrl('http://yandex.ru'),
     async.console.log('setUrl'),

@@ -48,3 +48,5 @@ qa/ext/net/socket/web-socket.js
 
 qa/ext/ui/ui_deprecated.js
 qa/ext/ui/browser.js
+qa/ext/ui/browserName.js
+qa/ext/ui/platform.js
