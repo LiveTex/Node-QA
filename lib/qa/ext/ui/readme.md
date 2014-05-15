@@ -1,15 +1,15 @@
 Selenium
 ========================
 
-###How to
+##How to
 
-##Download
+###Download
 
 [Download page](http://docs.seleniumhq.org/download/)
 
 Download Selenium Server and some of third party browser drivers, if needed.
 
-##Run
+###Run
 
 Run selenium standalone
 
@@ -25,4 +25,4 @@ chmod +x ./chromedriver
 ./chromedriver
 ```
 
-##All should be OK =)
+###All should be OK =)
