@@ -17,7 +17,7 @@ var fnc = function() {
     async.console.log('create session'),
     browser.setUrl('http://yandex.ru'),
     async.console.log('setUrl'),
-    browser.setTimeout(qa.ext.ui.timeoutType.IMPLICIT, 200),
+    browser.setTimeout(qa.ext.ui.timeoutType.IMPLICIT, 500),
     async.console.log('setTimeout'),
     browser.findElement(qa.ext.ui.searchStrategy.ID, 'tab-maps'),
     async.console.log('findElement'),
