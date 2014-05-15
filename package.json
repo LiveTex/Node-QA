@@ -10,10 +10,10 @@
     "url": "https://github.com/LiveTex/Node-QA"
   },
   "dependencies": {
-    "node-async": "0.3.26",
-    "node-ds": "0.2.26",
-    "node-protocols": "0.1.9",
-    "node-util": "0.4.6",
+    "node-async": "0.5.0-0",
+    "node-ds": "0.2.29",
+    "node-protocols": "0.1.12",
+    "node-util": "0.4.14",
     "livetex-tools": "*"
   }
 }
