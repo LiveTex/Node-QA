@@ -46,11 +46,11 @@ qa/ext/net/socket/message-iterator.js
 qa/ext/net/socket/echo-socket.js
 qa/ext/net/socket/web-socket.js
 
-qa/ext/ui/ui_deprecated.js
+qa/ext/ui/ui-deprecated.js
 qa/ext/ui/browser.js
-qa/ext/ui/actionMethod.js
-qa/ext/ui/browserName.js
+qa/ext/ui/action-method.js
+qa/ext/ui/browser-name.js
 qa/ext/ui/platform.js
-qa/ext/ui/searchStrategy.js
-qa/ext/ui/timeoutType.js
-qa/ext/ui/typeOfData.js
+qa/ext/ui/search-strategy.js
+qa/ext/ui/timeout-type.js
+qa/ext/ui/type-of-data.js
