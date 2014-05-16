@@ -26,6 +26,7 @@ qa/assert/fail.js
 
 qa/util/util.js
 qa/util/debug/debug.js
+qa/util/selenium-response/selenium-response.js
 
 qa/event-type.js
 
