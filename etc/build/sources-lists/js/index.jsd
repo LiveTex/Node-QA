@@ -54,3 +54,4 @@ qa/ext/ui/platform.js
 qa/ext/ui/search-strategy.js
 qa/ext/ui/timeout.js
 qa/ext/ui/element.js
+qa/ext/ui/element-property.js
