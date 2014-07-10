@@ -39,6 +39,7 @@ qa/ext/net/client.js
 qa/ext/net/cookie.js
 qa/ext/net/cookie-jar.js
 qa/ext/net/socket-type.js
+qa/ext/net/polling.js
 
 qa/ext/net/socket/i-socket.js
 qa/ext/net/socket/socket.js
