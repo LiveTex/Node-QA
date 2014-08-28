@@ -13,7 +13,6 @@
     "node-async": "0.5.0-0", 
     "node-ds": "0.2.29", 
     "node-protocols": "0.1.12", 
-    "node-util": "0.4.14", 
-    "livetex-tools": "*"
+    "node-util": "0.4.14"
   }
 }
